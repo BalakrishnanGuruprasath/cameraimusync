@@ -1,0 +1,8 @@
+from datetime import datetime
+
+def currenttime ():
+
+    # record time before capture
+    
+    now_time = datetime.now().strftime('%H:%M:%S.%f')[:-3]
+    return now_time
