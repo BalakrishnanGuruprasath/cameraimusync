@@ -1,0 +1,19 @@
+import tkinter as tk
+from datetime import datetime
+import time_std
+
+def display_time () :
+    if __name__ == '__main__':
+        current_time = time_std.currenttime()
+    clock_label['text'] = current_time
+    my_window.after(1, display_time)
+
+
+# creating window to display time
+
+my_window = tk.Tk()
+my_window.title('Current system time')
+clock_label = tk.Label(my_window, font = 'ariel 90', bg = 'black', fg = 'white')
+clock_label.grid(row = 0, column = 0)
+display_time()
+my_window.mainloop()
