@@ -1,0 +1,79 @@
+
+import cv2
+import pandas as pd
+from datetime import datetime
+import time_std
+import serial
+import time
+
+# enable serial communication with Arduino Board
+arduinoData = serial.Serial('com7', 9600)
+
+
+# defining functions for EMP coil
+def led_on():
+    arduinoData.write('1'.encode())
+
+def led_off():
+    arduinoData.write('0'.encode())
+
+time.sleep(5)
+
+
+# select camera
+cap = cv2.VideoCapture(0)
+
+
+
+timestamp = []
+timetwo = []
+imagename = []
+count = 0
+emp = 1
+
+
+while(True):
+    if __name__ == '__main__':
+        nowtime = time_std.currenttime()
+
+    # Capture frame-by-frame
+    ret, frame = cap.read()
+    if emp == 1:
+        led_on()
+
+    # record time when the image is received from the camera
+    nowtime2 = datetime.now().strftime('%H:%M:%S.%f')[:-3]
+    print(nowtime2)
+
+    # path for storage
+    path = 'F:\TalTech\Thesis'
+    cv2.imwrite('F:\TalTech\Thesis\Images\ex' + str(count) + '.jpg', frame)
+
+    #adding image names and timestamps to lists
+    imagename.append('ex' + str(count))
+    timestamp.append(nowtime)
+    timetwo.append(nowtime2)
+
+    print(len(imagename))
+
+    count += 1
+
+
+    # Display the resulting frame
+    cv2.imshow('frame', frame)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+
+
+# When everything done, release the capture
+cap.release()
+cv2.destroyAllWindows()
+
+# dictionary of lists
+dict = {'Image name': imagename, 'Time before capture': timestamp, 'Time after capture': timetwo}
+
+df = pd.DataFrame(dict)
+
+# saving the image timestamps
+df.to_csv('walk10.csv')
